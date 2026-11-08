@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AutoKit">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>AutoKit — Automatización personal</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#131e30;--panel2:#1a2940;--line:#293950;--txt:#eef4ff;--muted:#9aabc3;--accent:#55d6be;--accent2:#7c9cff;--danger:#ff7185;--radius:18px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#203a59 0,transparent 42%),var(--bg);color:var(--txt);min-height:100vh;padding:env(safe-area-inset-top) 0 calc(24px + env(safe-area-inset-bottom))}
+header{padding:22px 18px 14px;max-width:900px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#5e8cff);display:grid;place-items:center;color:#07121d;font-size:24px;font-weight:900}.brand h1{font-size:21px;margin:0}.brand small{color:var(--muted)}
+main{max-width:900px;margin:auto;padding:0 14px}.tabs{display:flex;gap:7px;overflow:auto;padding:8px 2px 16px;scrollbar-width:none}.tab{white-space:nowrap;border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:11px 15px;font-weight:650}.tab.active{background:var(--accent);border-color:var(--accent);color:#07121d}
+.panel{background:rgba(19,30,48,.94);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:0 12px 36px #0002}.panel h2{font-size:18px;margin:0 0 6px}.sub{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;color:#c7d4e8;font-weight:650}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:13px;background:#0d1727;color:var(--txt);font:inherit;min-width:0}textarea{min-height:80px;resize:vertical}
+button{font:inherit;cursor:pointer}.btn{border:0;border-radius:13px;padding:13px 16px;font-weight:750;background:var(--accent);color:#07121d;min-height:46px}.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--txt)}.btn.danger{background:#3b1e2a;color:#ffb5c0;border:1px solid #693344}.btn.small{min-height:36px;padding:8px 11px;font-size:13px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.countrow{display:flex;gap:7px;flex-wrap:wrap}.countrow button{padding:10px 14px;border-radius:10px;background:#0d1727;border:1px solid var(--line);color:var(--txt)}.countrow button.selected{border-color:var(--accent);color:var(--accent)}
+.status{font-size:12px;color:var(--muted);margin-top:10px;min-height:18px}.record{border:1px solid var(--line);border-radius:14px;padding:13px;margin-top:10px;background:#0e1929}.recordtop{display:flex;justify-content:space-between;gap:8px;align-items:center}.record strong{font-size:14px}.record pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#c4d3e8;font-size:12px;line-height:1.5;margin:10px 0}.muted{color:var(--muted)}.empty{text-align:center;padding:26px 12px;color:var(--muted)}.pill{font-size:11px;color:var(--accent);border:1px solid #28665e;border-radius:99px;padding:4px 8px}
+.notice{background:#102c32;border:1px solid #245b59;color:#c7f8ed;border-radius:13px;padding:12px;font-size:12px;line-height:1.5;margin-top:12px}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
+.hidden{display:none!important}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.field.full{grid-column:1/-1}.panel{padding:22px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">A</div><div><h1>AutoKit</h1><small>Tu espacio de automatización</small></div></div><span class="pill">PRIVADO · LOCAL</span></header>
+<main>
+<nav class="tabs" aria-label="Secciones">
+<button class="tab active" data-tab="generator">Generador</button><button class="tab" data-tab="templates">Plantillas</button><button class="tab" data-tab="history">Historial</button><button class="tab" data-tab="tools">Herramientas</button>
+</nav>
+<section id="generator" class="view">
+<div class="panel">
+<h2>Generar datos de prueba</h2><p class="sub">Crea registros ficticios para pruebas, prototipos y formularios que tengas autorización para utilizar.</p>
+<div class="field"><label>Cantidad de registros</label><div class="countrow" id="counts"><button data-count="1" class="selected">1</button><button data-count="5">5</button><button data-count="10">10</button><button data-count="25">25</button><button data-count="50">50</button><button data-count="100">100</button></div></div>
+<div class="grid" style="margin-top:15px">
+<div class="field"><label for="locale">Estilo de nombres</label><select id="locale"><option value="es">Hispano</option><option value="en">Internacional</option></select></div>
+<div class="field"><label for="domain">Dominio de correo</label><select id="domain"><option value="example.test">example.test (pruebas)</option><option value="example.com">example.com (reservado)</option></select></div>
+</div>
+<div class="actions"><button class="btn" id="generate">✦ Generar registros</button><button class="btn secondary" id="copyAll">Copiar todos</button><button class="btn secondary" id="export">Exportar CSV</button></div>
+<div id="generated" aria-live="polite"></div><div id="genStatus" class="status"></div>
+<div class="notice">Los teléfonos se generan dentro de rangos ficticios de prueba. Los correos usan dominios reservados para ejemplos; no se crean cuentas ni se envían mensajes.</div>
+</div>
+</section>
+<section id="templates" class="view hidden">
+<div class="panel"><h2>Plantillas de formulario</h2><p class="sub">Define campos reutilizables y copia los valores para pegarlos manualmente en un formulario autorizado.</p>
+<div class="grid"><div class="field"><label for="tplName">Nombre de plantilla</label><input id="tplName" placeholder="Ej. Registro de prueba"></div><div class="field"><label for="tplFields">Campos (uno por línea)</label><textarea id="tplFields" placeholder="nombre&#10;correo&#10;telefono&#10;usuario"></textarea></div></div>
+<div class="actions"><button class="btn" id="saveTpl">Guardar plantilla</button></div><div id="tplList"></div>
+</div>
+<div class="panel"><h2>Relleno asistido</h2><p class="sub">Selecciona una plantilla y un registro generado. AutoKit prepara los valores y te permite copiarlos campo por campo. Por seguridad del navegador, una PWA no puede escribir directamente en formularios de otros sitios.</p>
+<div class="grid"><div class="field"><label for="tplSelect">Plantilla</label><select id="tplSelect"></select></div><div class="field"><label for="recordSelect">Registro</label><select id="recordSelect"></select></div></div><div id="fillResults"></div></div>
+</section>
+<section id="history" class="view hidden">
+<div class="panel"><h2>Historial local</h2><p class="sub">Los registros se guardan únicamente en este dispositivo, en el almacenamiento del navegador.</p><div class="actions"><button class="btn secondary" id="historyCopy">Copiar historial</button><button class="btn danger" id="clearHistory">Eliminar historial</button></div><div id="historyList"></div></div>
+</section>
+<section id="tools" class="view hidden">
+<div class="panel"><h2>Herramientas rápidas</h2><p class="sub">Generadores independientes para tareas de desarrollo y control de calidad.</p>
+<div class="grid"><div class="field"><label for="passLength">Longitud de contraseña</label><input type="number" id="passLength" min="8" max="64" value="18"></div><div class="field"><label>Contraseña segura</label><input id="passwordOut" readonly placeholder="Pulsa generar"></div></div><div class="actions"><button class="btn" id="makePass">Generar contraseña</button><button class="btn secondary" id="copyPass">Copiar</button></div>
+<div class="divider"></div>
+<div class="field" style="margin-top:18px"><label for="textInput">Texto para limpiar espacios</label><textarea id="textInput" placeholder="Pega aquí el texto..."></textarea></div><div class="actions"><button class="btn secondary" id="cleanText">Limpiar texto</button><button class="btn secondary" id="copyClean">Copiar resultado</button></div><div id="cleanStatus" class="status"></div>
+<div class="notice">AutoKit no automatiza inicios de sesión, no evade CAPTCHA ni límites, no crea identidades para beneficios o referidos y no interactúa con sitios sin autorización.</div>
+</div>
+</section>
+<footer>AutoKit · Funciona sin cuenta y sin servidor · Tus datos permanecen en este dispositivo</footer>
+</main>
+<script>
+(()=>{'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY='autokit.v1', state=load(), first=['Alejandro','Sofía','Mateo','Valentina','Daniel','Camila','Gabriel','Lucía','Diego','Mariana','Andrés','Elena','Javier','Isabella','Samuel','Natalia','Adrián','Paula','Nicolás','Mía'], last=['García','Rodríguez','Martínez','López','Hernández','González','Pérez','Sánchez','Ramírez','Torres','Flores','Rivera','Gómez','Díaz','Cruz','Reyes'], firstEn=['Alex','Jordan','Taylor','Morgan','Casey','Riley','Avery','Jamie','Cameron','Skyler'], lastEn=['Smith','Johnson','Brown','Taylor','Miller','Davis','Wilson','Moore','Clark','Lewis'];
+let count=1, latest=[];
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{records:[],templates:[]}}catch{return{records:[],templates:[]}}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(state))}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function slug(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
+function pass(n=18){const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%*-_';let out='';const c=crypto.getRandomValues(new Uint32Array(n));for(let i=0;i<n;i++)out+=chars[c[i]%chars.length];return out}
+function makeRecord(){const es=$('#locale').value==='es', f=pick(es?first:firstEn), l=pick(es?last:lastEn), id=Date.now().toString(36)+Math.random().toString(36).slice(2,6), user=slug(f+'.'+l)+Math.floor(Math.random()*900+100);return{id,nombre:f+' '+l,usuario:user,correo:user+'@'+$('#domain').value,telefono:'+1 202-555-01'+String(Math.floor(Math.random()*10)).padStart(2,'0'),contrasena:pass(18),fecha:new Date().toISOString()}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function recordText(r){return `Nombre: ${r.nombre}\nUsuario: ${r.usuario}\nCorreo: ${r.correo}\nTeléfono: ${r.telefono}\nContraseña: ${r.contrasena}`}
+async function copy(t,status){try{await navigator.clipboard.writeText(t);if(status)$(status).textContent='Copiado al portapapeles.'}catch{$(status||'#genStatus').textContent='No se pudo copiar automáticamente. Selecciona y copia el texto manualmente.'}}
+function renderRecords(list,target){$(target).innerHTML=list.length?list.map(r=>`<div class="record"><div class="recordtop"><strong>${esc(r.nombre)}</strong><button class="btn secondary small" data-copy="${esc(r.id)}">Copiar</button></div><pre>${esc(recordText(r))}</pre></div>`).join(''):'<div class="empty">Todavía no hay registros.</div>';$$(`${target} [data-copy]`).forEach(b=>b.onclick=()=>{const r=[...latest,...state.records].find(x=>x.id===b.dataset.copy);if(r)copy(recordText(r),'#genStatus')})}
+function csv(rows){const cols=['nombre','usuario','correo','telefono','contrasena','fecha'];return [cols.join(','),...rows.map(r=>cols.map(k=>'"'+String(r[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n')}
+function download(name,content,type){const a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.toggle('active',x===b));$$('.view').forEach(v=>v.classList.toggle('hidden',v.id!==b.dataset.tab));if(b.dataset.tab==='history')renderHistory();if(b.dataset.tab==='templates')renderTemplates()});
+$('#counts').onclick=e=>{const b=e.target.closest('[data-count]');if(!b)return;count=+b.dataset.count;$$('#counts button').forEach(x=>x.classList.toggle('selected',x===b))};
+$('#generate').onclick=()=>{latest=Array.from({length:count},makeRecord);state.records=[...latest,...state.records].slice(0,500);persist();renderRecords(latest,'#generated');$('#genStatus').textContent=`${latest.length} registro(s) generado(s) y guardado(s) localmente.`;refreshSelectors()};
+$('#copyAll').onclick=()=>copy(latest.map(recordText).join('\n\n'),'#genStatus');
+$('#export').onclick=()=>{const rows=latest.length?latest:state.records;if(!rows.length){$('#genStatus').textContent='No hay datos para exportar.';return}download('autokit-registros.csv','\ufeff'+csv(rows),'text/csv;charset=utf-8')};
+$('#makePass').onclick=()=>{$('#passwordOut').value=pass(Math.max(8,Math.min(64,+$('#passLength').value||18)))};
+$('#copyPass').onclick=()=>copy($('#passwordOut').value,'#cleanStatus');
+$('#cleanText').onclick=()=>{$('#textInput').value=$('#textInput').value.replace(/[ \t]+/g,' ').replace(/\n{3,}/g,'\n\n').trim();$('#cleanStatus').textContent='Texto limpiado.'};
+$('#copyClean').onclick=()=>copy($('#textInput').value,'#cleanStatus');
+$('#saveTpl').onclick=()=>{const name=$('#tplName').value.trim(),fields=$('#tplFields').value.split('\n').map(x=>x.trim()).filter(Boolean);if(!name||!fields.length){$('#tplList').innerHTML='<p class="status">Escribe un nombre y al menos un campo.</p>';return}state.templates.push({id:Date.now().toString(36),name,fields});persist();$('#tplName').value='';$('#tplFields').value='';renderTemplates()};
+function renderTemplates(){$('#tplList').innerHTML=state.templates.length?state.templates.map(t=>`<div class="record"><div class="recordtop"><strong>${esc(t.name)}</strong><button class="btn danger small" data-del="${t.id}">Eliminar</button></div><div class="muted">${t.fields.map(esc).join(' · ')}</div></div>`).join(''):'<div class="empty">No hay plantillas guardadas.</div>';$$('[data-del]').forEach(b=>b.onclick=()=>{state.templates=state.templates.filter(t=>t.id!==b.dataset.del);persist();renderTemplates()});$('#tplSelect').innerHTML=state.templates.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');refreshSelectors()}
+function refreshSelectors(){$('#recordSelect').innerHTML=state.records.map(r=>`<option value="${r.id}">${esc(r.nombre)} — ${esc(r.correo)}</option>`).join('');if(!state.templates.length)$('#fillResults').innerHTML='<div class="empty">Guarda una plantilla para preparar el relleno.</div>'}
+function renderFill(){const t=state.templates.find(x=>x.id===$('#tplSelect').value),r=state.records.find(x=>x.id===$('#recordSelect').value);if(!t||!r){$('#fillResults').innerHTML='<div class="empty">Selecciona una plantilla y genera al menos un registro.</div>';return}$('#fillResults').innerHTML=t.fields.map(f=>{const key=f.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');const map={nombre:'nombre',name:'nombre',usuario:'usuario',username:'usuario',correo:'correo',email:'correo',telefono:'telefono',phone:'telefono',contrasena:'contrasena',password:'contrasena'};const value=r[map[key]]??'';return `<div class="record"><div class="recordtop"><strong>${esc(f)}</strong><button class="btn secondary small" data-val="${esc(value)}">Copiar</button></div><div class="muted">${esc(value||'Campo sin correspondencia: añade el valor manualmente')}</div></div>`}).join('');$$('#fillResults [data-val]').forEach(b=>b.onclick=()=>copy(b.dataset.val,'#genStatus'))}
+$('#tplSelect').onchange=renderFill;$('#recordSelect').onchange=renderFill;
+function renderHistory(){renderRecords(state.records,'#historyList')}
+$('#historyCopy').onclick=()=>copy(state.records.map(recordText).join('\n\n'),'#genStatus');
+$('#clearHistory').onclick=()=>{if(confirm('¿Eliminar todos los registros guardados en este dispositivo?')){state.records=[];latest=[];persist();renderHistory();$('#generated').innerHTML='';refreshSelectors()}};
+if('serviceWorker'in navigator && location.protocol!=='file:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+renderTemplates();renderHistory();refreshSelectors();
+})();
+</script>
+</body></html>
