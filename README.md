@@ -27,7 +27,7 @@ Abre `http://localhost:8000`. Para instalar en un iPhone se necesita publicar po
 
 ## Privacidad y límites del navegador
 Los registros y plantillas se guardan en `localStorage` del navegador y no se envían a un servidor. Borrar los datos del sitio o cambiar de navegador/dispositivo puede eliminarlos. Exporta un CSV si necesitas una copia.
-Los teléfonos usan el bloque ficticio +1 202-555-0100 a 0199 y los correos usan dominios de ejemplo. No son datos de contacto reales.
+El generador crea nombres ficticios, usuarios con dos dígitos y direcciones @gmail.com candidatas no verificadas. Permite seleccionar 998 (Cancún), 786/305 (Miami), 641 (Iowa), 614 (Ohio), 212 (Nueva York), 213 (California), 312 (Illinois), 404 (Georgia), 702 (Nevada), 713 (Texas), 615 (Tennessee), 617 (Massachusetts), 206 (Washington) y 602 (Arizona). Los teléfonos son marcadores de prueba no operativos: para EE. UU. se usa el bloque ficticio 555-0100 a 555-0199; para México se ocultan los dígitos centrales. No crean cuentas ni líneas activas y no sirven para recibir SMS o verificar registros reales. No crea cuentas ni líneas activas. Para registros reales, utiliza una dirección Gmail creada por ti y un número asignado por tu operador.
 Una PWA normal no puede leer ni modificar formularios de otras páginas: el aislamiento entre sitios lo impide. Usa copiar/pegar manualmente o integra APIs oficiales con autorización. AutoKit no evade CAPTCHA, autenticación, controles de acceso, límites ni programas de referidos.
 
 ## Datos personales locales
