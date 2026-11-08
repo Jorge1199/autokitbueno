@@ -29,3 +29,6 @@ Abre `http://localhost:8000`. Para instalar en un iPhone se necesita publicar po
 Los registros y plantillas se guardan en `localStorage` del navegador y no se envían a un servidor. Borrar los datos del sitio o cambiar de navegador/dispositivo puede eliminarlos. Exporta un CSV si necesitas una copia.
 Los teléfonos usan el bloque ficticio +1 202-555-0100 a 0199 y los correos usan dominios de ejemplo. No son datos de contacto reales.
 Una PWA normal no puede leer ni modificar formularios de otras páginas: el aislamiento entre sitios lo impide. Usa copiar/pegar manualmente o integra APIs oficiales con autorización. AutoKit no evade CAPTCHA, autenticación, controles de acceso, límites ni programas de referidos.
+
+## Datos personales locales
+La sección **Mis datos** permite guardar nombre, correo y teléfono en el almacenamiento local del dispositivo y copiarlos manualmente. No se envían a páginas externas ni se rellenan o envían formularios automáticamente.

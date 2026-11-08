@@ -30,7 +30,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 <header><div class="brand"><div class="logo">A</div><div><h1>AutoKit</h1><small>Tu espacio de automatización</small></div></div><span class="pill">PRIVADO · LOCAL</span></header>
 <main>
 <nav class="tabs" aria-label="Secciones">
-<button class="tab active" data-tab="generator">Generador</button><button class="tab" data-tab="templates">Plantillas</button><button class="tab" data-tab="history">Historial</button><button class="tab" data-tab="tools">Herramientas</button>
+<button class="tab active" data-tab="generator">Generador</button><button class="tab" data-tab="profile">Mis datos</button><button class="tab" data-tab="templates">Plantillas</button><button class="tab" data-tab="history">Historial</button><button class="tab" data-tab="tools">Herramientas</button>
 </nav>
 <section id="generator" class="view">
 <div class="panel">
@@ -43,6 +43,13 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 <div class="actions"><button class="btn" id="generate">✦ Generar registros</button><button class="btn secondary" id="copyAll">Copiar todos</button><button class="btn secondary" id="export">Exportar CSV</button></div>
 <div id="generated" aria-live="polite"></div><div id="genStatus" class="status"></div>
 <div class="notice">Los teléfonos se generan dentro de rangos ficticios de prueba. Los correos usan dominios reservados para ejemplos; no se crean cuentas ni se envían mensajes.</div>
+</div>
+</section>
+<section id="profile" class="view hidden">
+<div class="panel"><h2>Mis datos personales</h2><p class="sub">Guarda tus propios datos de contacto en este dispositivo y cópialos campo por campo para completar manualmente tu formulario en Safari. No se envían a AutoKit ni a AdSelect.</p>
+<div class="grid"><div class="field full"><label for="personalName">Nombre y apellidos</label><input id="personalName" autocomplete="name" placeholder="Tu nombre real"></div><div class="field"><label for="personalEmail">Correo electrónico</label><input id="personalEmail" type="email" autocomplete="email" placeholder="tu@correo.com"></div><div class="field"><label for="personalPhone">Teléfono</label><input id="personalPhone" type="tel" autocomplete="tel" placeholder="Tu número de teléfono"></div></div>
+<div class="actions"><button class="btn" id="saveProfile">Guardar en este iPhone</button><button class="btn secondary" id="openAdSelect">Abrir AdSelect</button></div><div id="profileStatus" class="status" aria-live="polite"></div><div id="profileCopy"></div>
+<div class="notice">Privacidad: estos datos quedan guardados localmente en el almacenamiento de AutoKit. Usa solo información verdadera y revisa cada campo antes de enviar el formulario. Los botones copian un dato al portapapeles; tú decides cuándo pegarlo y enviar.</div>
 </div>
 </section>
 <section id="templates" class="view hidden">
@@ -69,7 +76,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 <script>
 (()=>{'use strict';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const KEY='autokit.v1', state=load(), first=['Alejandro','Sofía','Mateo','Valentina','Daniel','Camila','Gabriel','Lucía','Diego','Mariana','Andrés','Elena','Javier','Isabella','Samuel','Natalia','Adrián','Paula','Nicolás','Mía'], last=['García','Rodríguez','Martínez','López','Hernández','González','Pérez','Sánchez','Ramírez','Torres','Flores','Rivera','Gómez','Díaz','Cruz','Reyes'], firstEn=['Alex','Jordan','Taylor','Morgan','Casey','Riley','Avery','Jamie','Cameron','Skyler'], lastEn=['Smith','Johnson','Brown','Taylor','Miller','Davis','Wilson','Moore','Clark','Lewis'];
+const KEY='autokit.v1', PROFILE_KEY='autokit.profile.v1', state=load(), first=['Alejandro','Sofía','Mateo','Valentina','Daniel','Camila','Gabriel','Lucía','Diego','Mariana','Andrés','Elena','Javier','Isabella','Samuel','Natalia','Adrián','Paula','Nicolás','Mía'], last=['García','Rodríguez','Martínez','López','Hernández','González','Pérez','Sánchez','Ramírez','Torres','Flores','Rivera','Gómez','Díaz','Cruz','Reyes'], firstEn=['Alex','Jordan','Taylor','Morgan','Casey','Riley','Avery','Jamie','Cameron','Skyler'], lastEn=['Smith','Johnson','Brown','Taylor','Miller','Davis','Wilson','Moore','Clark','Lewis'];
 let count=1, latest=[];
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||{records:[],templates:[]}}catch{return{records:[],templates:[]}}}
 function persist(){localStorage.setItem(KEY,JSON.stringify(state))}
@@ -93,6 +100,10 @@ $('#copyPass').onclick=()=>copy($('#passwordOut').value,'#cleanStatus');
 $('#cleanText').onclick=()=>{$('#textInput').value=$('#textInput').value.replace(/[ \t]+/g,' ').replace(/\n{3,}/g,'\n\n').trim();$('#cleanStatus').textContent='Texto limpiado.'};
 $('#copyClean').onclick=()=>copy($('#textInput').value,'#cleanStatus');
 $('#saveTpl').onclick=()=>{const name=$('#tplName').value.trim(),fields=$('#tplFields').value.split('\n').map(x=>x.trim()).filter(Boolean);if(!name||!fields.length){$('#tplList').innerHTML='<p class="status">Escribe un nombre y al menos un campo.</p>';return}state.templates.push({id:Date.now().toString(36),name,fields});persist();$('#tplName').value='';$('#tplFields').value='';renderTemplates()};
+function getProfile(){try{return JSON.parse(localStorage.getItem(PROFILE_KEY))||{name:'',email:'',phone:''}}catch{return{name:'',email:'',phone:''}}}
+function renderProfile(){const p=getProfile();$('#personalName').value=p.name||'';$('#personalEmail').value=p.email||'';$('#personalPhone').value=p.phone||'';const fields=[['Nombre',p.name],['Correo',p.email],['Teléfono',p.phone]];$('#profileCopy').innerHTML=fields.map(([label,value],i)=>`<div class="record"><div class="recordtop"><strong>${label}</strong><button class="btn secondary small" data-profile-copy="${i}" ${value?'':'disabled'}>Copiar</button></div><div class="muted">${esc(value||'Todavía no guardado')}</div></div>`).join('');$$('#profileCopy [data-profile-copy]').forEach(b=>b.onclick=()=>{const current=getProfile(),v=[current.name,current.email,current.phone][+b.dataset.profileCopy];copy(v,'#profileStatus')})}
+$('#saveProfile').onclick=()=>{const profile={name:$('#personalName').value.trim(),email:$('#personalEmail').value.trim(),phone:$('#personalPhone').value.trim()};if(profile.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)){$('#profileStatus').textContent='Revisa el formato del correo electrónico.';return}localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));$('#profileStatus').textContent='Datos guardados solo en este iPhone.';renderProfile()};
+$('#openAdSelect').onclick=()=>window.open('https://adselect.net/register?ref=mangdiel1199','_blank','noopener');
 function renderTemplates(){$('#tplList').innerHTML=state.templates.length?state.templates.map(t=>`<div class="record"><div class="recordtop"><strong>${esc(t.name)}</strong><button class="btn danger small" data-del="${t.id}">Eliminar</button></div><div class="muted">${t.fields.map(esc).join(' · ')}</div></div>`).join(''):'<div class="empty">No hay plantillas guardadas.</div>';$$('[data-del]').forEach(b=>b.onclick=()=>{state.templates=state.templates.filter(t=>t.id!==b.dataset.del);persist();renderTemplates()});$('#tplSelect').innerHTML=state.templates.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');refreshSelectors()}
 function refreshSelectors(){$('#recordSelect').innerHTML=state.records.map(r=>`<option value="${r.id}">${esc(r.nombre)} — ${esc(r.correo)}</option>`).join('');if(!state.templates.length)$('#fillResults').innerHTML='<div class="empty">Guarda una plantilla para preparar el relleno.</div>'}
 function renderFill(){const t=state.templates.find(x=>x.id===$('#tplSelect').value),r=state.records.find(x=>x.id===$('#recordSelect').value);if(!t||!r){$('#fillResults').innerHTML='<div class="empty">Selecciona una plantilla y genera al menos un registro.</div>';return}$('#fillResults').innerHTML=t.fields.map(f=>{const key=f.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');const map={nombre:'nombre',name:'nombre',usuario:'usuario',username:'usuario',correo:'correo',email:'correo',telefono:'telefono',phone:'telefono',contrasena:'contrasena',password:'contrasena'};const value=r[map[key]]??'';return `<div class="record"><div class="recordtop"><strong>${esc(f)}</strong><button class="btn secondary small" data-val="${esc(value)}">Copiar</button></div><div class="muted">${esc(value||'Campo sin correspondencia: añade el valor manualmente')}</div></div>`}).join('');$$('#fillResults [data-val]').forEach(b=>b.onclick=()=>copy(b.dataset.val,'#genStatus'))}
@@ -101,7 +112,7 @@ function renderHistory(){renderRecords(state.records,'#historyList')}
 $('#historyCopy').onclick=()=>copy(state.records.map(recordText).join('\n\n'),'#genStatus');
 $('#clearHistory').onclick=()=>{if(confirm('¿Eliminar todos los registros guardados en este dispositivo?')){state.records=[];latest=[];persist();renderHistory();$('#generated').innerHTML='';refreshSelectors()}};
 if('serviceWorker'in navigator && location.protocol!=='file:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-renderTemplates();renderHistory();refreshSelectors();
+renderTemplates();renderHistory();refreshSelectors();renderProfile();
 })();
 </script>
 </body></html>
